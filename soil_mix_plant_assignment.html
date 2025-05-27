@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Săculeți mix de pământ</title>
+    <style>
+    body {
+      background: url('https://i.imgur.com/LgrxpLz.png'), #d0f0c0;
+      font-family: 'Quicksand', cursive;
+      font-size: 20px;
+      padding: 12px;
+      max-width: 900px;
+      margin: auto;
+      color: #2f4f2f;
+    }
+    h2 {
+      color: #2e7d32;
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+    label {
+      display: block;
+      font-size: 16px;
+      margin-top: 12px;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 70%;
+      padding: 5px 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 2px solid #cdeac0;
+      background: linear-gradient(120deg, #eafaf1 60%, #cdeac0 100%);
+      color: #2f4f2f;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      box-shadow: 0 1px 4px 0 rgba(76,175,80,0.06);
+    }
+    select:focus, input[type="number"]:focus, input[type="text"]:focus {
+      border-color: #66bb6a;
+      box-shadow: 0 0 0 2px #b5e7a0;
+    }
+    button {
+      background-color: #66bb6a;
+      color: white;
+      font-size: 18px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      margin-top: 12px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: background 0.2s, transform 0.1s;
+      font-weight: 600;
+    }
+    button:hover, button:focus {
+      background-color: #388e3c;
+      transform: scale(1.03);
+    }
+    table {
+      width: 100%;
+      margin-top: 12px;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 7px 8px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+    th {
+      background-color: #b5e7a0;
+      color: #2f4f2f;
+      font-size: 18px;
+    }
+    .plant-field-row {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+    .plant-field-label {
+      min-width: 220px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .plant-field-input {
+      flex: 1;
+      width: 100%;
+      max-width: 350px;
+    }
+    </style>
+</head>
+<body>
+    <h2>Săculeți mix de pământ</h2>
+    <form id="productForm">
+        <label for="sizeSelect">Alegeți mărimea sacului:</label>
+        <select id="sizeSelect" name="sizeSelect" required>
+            <option value="" disabled selected>Selectați mărimea</option>
+            <option value="2.5" data-price="45">2.5 litri (45 lei)</option>
+            <option value="5" data-price="70">5 litri (70 lei)</option>
+        </select>
+        <div id="quantityContainer" style="display:none; margin-top: 12px;">
+            <label for="quantityInput">Număr saculeți:</label>
+            <input type="number" id="quantityInput" name="quantityInput" min="1" value="1" />
+        </div>
+        <div id="plantsContainer"></div>
+        <button type="button" id="okButton" style="display:none;">OK</button>
+    </form>
+    <div id="resultTable"></div>
+
+    <script>
+        const sizeSelect = document.getElementById('sizeSelect');
+        const quantityContainer = document.getElementById('quantityContainer');
+        const quantityInput = document.getElementById('quantityInput');
+        const plantsContainer = document.getElementById('plantsContainer');
+        const okButton = document.getElementById('okButton');
+        const resultTable = document.getElementById('resultTable');
+
+        sizeSelect.addEventListener('change', () => {
+            if (sizeSelect.value) {
+                quantityContainer.style.display = 'block';
+                okButton.style.display = 'block';
+                updatePlantFields();
+            } else {
+                quantityContainer.style.display = 'none';
+                okButton.style.display = 'none';
+                plantsContainer.innerHTML = '';
+                resultTable.innerHTML = '';
+            }
+        });
+
+        quantityInput.addEventListener('input', () => {
+            updatePlantFields();
+        });
+
+        function updatePlantFields() {
+            const quantity = parseInt(quantityInput.value) || 0;
+            plantsContainer.innerHTML = '';
+            for (let i = 0; i < quantity; i++) {
+                const div = document.createElement('div');
+                div.className = 'plant-field-row';
+                div.innerHTML = `
+                    <label class="plant-field-label">Planta pentru saculețul ${i + 1}:</label>
+                    <input type="text" class="plant-field-input" placeholder="Introduceți specia plantei" required />
+                `;
+                plantsContainer.appendChild(div);
+            }
+        }
+
+        okButton.addEventListener('click', () => {
+            const size = sizeSelect.value;
+            const pricePerUnit = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].getAttribute('data-price'));
+            const quantity = parseInt(quantityInput.value) || 0;
+            const plants = Array.from(plantsContainer.querySelectorAll('input.plant-field-input')).map(input => input.value.trim());
+
+            if (plants.some(plant => plant === '')) {
+                alert('Vă rugăm să introduceți specia plantei pentru fiecare saculeț.');
+                return;
+            }
+
+            let totalPrice = pricePerUnit * quantity;
+
+            let tableHTML = '<table><thead><tr><th>Mărimea sacului</th><th>Specia plantei</th><th>Preț total (lei)</th></tr></thead><tbody>';
+            for (let i = 0; i < quantity; i++) {
+                tableHTML += `<tr><td>${size} litri</td><td>${plants[i]}</td><td>${pricePerUnit} lei</td></tr>`;
+            }
+            tableHTML += `<tr><td colspan="2" style="text-align:right;"><strong>Total general:</strong></td><td><strong>${totalPrice} lei</strong></td></tr>`;
+            tableHTML += '</tbody></table>';
+
+            resultTable.innerHTML = tableHTML;
+        });
+    </script>
+</body>
+</html>
