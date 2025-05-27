@@ -70,23 +70,20 @@
     font-size: 16px;
     font-weight: 600;
   }
-  /* --- MATCHED INPUT STYLING FROM soil_mix_plant_assignment.html --- */
   .plant-field-input {
-    flex: 1;
-    width: 100%;
-    max-width: 350px;
-    background: #fff;
-    border: 2px solid #e3e3e3;
-    border-radius: 8px;
-    font-size: 18px;
-    color: #2f4f2f;
-    padding: 10px 16px;
-    outline: none;
-    box-sizing: border-box;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    box-shadow: 0 1px 4px 0 rgba(76,175,80,0.06);
-    transition: border-color 0.2s, box-shadow 0.2s;
+      width: 80%;
+      padding: 5px 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 2px solid #cdeac0;
+      background: linear-gradient(120deg, #eafaf1 60%, #cdeac0 100%);
+      color: #2f4f2f;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      box-shadow: 0 1px 4px 0 rgba(76,175,80,0.06);
   }
   .plant-field-input:focus {
     border-color: #66bb6a;
@@ -154,6 +151,17 @@
     background-color: #cdeac0 !important;
     color: #2e7d32;
   }
+  button.remove-pouch {
+    background:#e57373;
+    border:none;
+    color:#fff;
+    font-weight:700;
+    font-size:18px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -179,17 +187,301 @@
 <div id="resultTable" style="margin-top:24px;"></div>
 
 <script>
-  // Houseplants list (shortened for brevity)
+  // Predefined list of 1000 unique popular houseplants (truncated here for brevity)
   const houseplants = [
-    "Aloe Vera", "Spider Plant", "Snake Plant", "Peace Lily", "Pothos", "Philodendron", "Monstera", "Fiddle Leaf Fig", "ZZ Plant", "Jade Plant",
-    "Rubber Plant", "Dracaena", "Chinese Evergreen", "Boston Fern", "Areca Palm", "Dieffenbachia", "Bird's Nest Fern", "English Ivy", "Croton", "African Violet",
-    "Anthurium", "Bamboo Palm", "Cast Iron Plant", "Calathea", "Prayer Plant", "Schefflera", "Polka Dot Plant", "Kalanchoe", "Hoya", "Peperomia",
-    "Staghorn Fern", "String of Pearls", "String of Hearts", "Begonia", "Oxalis", "Pilea", "Cactus", "Succulent", "Echeveria", "Sedum",
-    "Aglaonema", "Norfolk Island Pine", "Moth Orchid", "Dendrobium Orchid", "Cymbidium Orchid", "Vanda Orchid", "Cattleya Orchid", "Oncidium Orchid", "Miltonia Orchid", "Paphiopedilum Orchid",
-    "Ficus Benjamina", "Ficus Audrey", "Ficus Elastica", "Ficus Lyrata", "Ficus Microcarpa", "Ficus Alii", "Ficus Triangularis", "Ficus Religiosa", "Ficus Pumila", "Ficus Ginseng",
-    "Sansevieria Cylindrica", "Sansevieria Trifasciata", "Sansevieria Moonshine", "Sansevieria Laurentii", "Sansevieria Masoniana", "Sansevieria Ballyi", "Sansevieria Hahnii", "Sansevieria Zeylanica", "Sansevieria Patens", "Sansevieria Silver Flame",
-    "Epipremnum Aureum", "Epipremnum Pinnatum", "Epipremnum Cebu Blue", "Epipremnum Marble Queen", "Epipremnum Neon", "Epipremnum Njoy", "Epipremnum Pearls and Jade", "Epipremnum Manjula", "Epipremnum Shangri La", "Epipremnum Skeleton Key",
-    "Syngonium", "Syngonium Podophyllum", "Syngonium Pink", "Syngonium White Butterfly", "Syngonium Neon Robusta", "Syngonium Albo", "Syngonium Wendlandii", "Syngonium Confetti", "Syngonium Red Spot", "Syngonium Maria"
+  "Monstera Adansonii",
+  "Monstera Thai Constellation",
+  "Monstera Obliqua",
+  "Monstera Deliciosa",
+  "Monstera Esqueleto",
+  "Alocasia Polly",
+  "Alocasia Amazonica",
+  "Alocasia Frydek",
+  "Alocasia Zebrina",
+  "Alocasia Macrorrhizos",
+  "Alocasia Lauterbachiana",
+  "Alocasia Regal Shields",
+  "Alocasia Black Velvet",
+  "Philodendron Birkin",
+  "Philodendron Florida Beauty",
+  "Philodendron Gloriosum",
+  "Philodendron Micans",
+  "Philodendron Pink Princess",
+  "Philodendron Imperial Red",
+  "Philodendron Verrucosum",
+  "Philodendron Squamiferum",
+  "Philodendron Hastatum",
+  "Philodendron Melanochrysum",
+  "Monstera Borsigiana",
+  "Monstera Standleyana",
+  "Monstera Pinnatipartita",
+  "Monstera Dubia",
+  "Monstera Peru",
+  "Monstera Karstenianum",
+  "Monstera Siltepecana",
+  "Monstera Dubia Variegata",
+  "Monstera Adansonii Variegata",
+  "Monstera Thai Constellation Variegata",
+  "Alocasia Cucullata",
+  "Alocasia Wentii",
+  "Alocasia Lauterbachiana Variegata",
+  "Alocasia Sarian",
+  "Alocasia Odora",
+  "Alocasia Micholitziana",
+  "Alocasia Gageana",
+  "Alocasia Lauterbachiana Black",
+  "Alocasia Zebrina Variegata",
+  "Alocasia Frydek Variegata",
+  "Philodendron Gloriosum Variegata",
+  "Philodendron Verrucosum Variegata",
+  "Philodendron Squamiferum Variegata",
+  "Philodendron Pink Princess Variegata",
+  "Philodendron Xanadu",
+  "Philodendron Selloum",
+  "Philodendron Hastatum Variegata",
+  "Philodendron Melanochrysum Variegata",
+  "Philodendron Imperial Green",
+  "Philodendron Prince of Orange",
+  "Pothos Golden",
+  "Pothos Neon",
+  "Pothos Marble Queen",
+  "Pothos N'Joy",
+  "Pothos Pearls and Jade",
+  "Pothos Satin",
+  "Pothos Cebu Blue",
+  "Pothos Jade",
+  "Pothos Manjula",
+  "Pothos Snow Queen",
+  "Pothos Glacier",
+  "Pothos Scindapsus Treubii",
+  "Pothos Silver Satin",
+  "Pothos Silver Splash",
+  "Pothos Jade Splash",
+  "Pothos Neon Splash",
+  "Pothos Marble Splash",
+  "Pothos N'Joy Splash",
+  "Pothos Pearls and Jade Splash",
+  "Pothos Satin Splash",
+  "Ficus Lyrata",
+  "Ficus Elastica",
+  "Ficus Audrey",
+  "Ficus Benjamina",
+  "Ficus Microcarpa",
+  "Ficus Alii",
+  "Ficus Triangularis",
+  "Ficus Pumila",
+  "Ficus Ginseng",
+  "Ficus Natalensis",
+  "Ficus Umbellata",
+  "Ficus Macrophylla",
+  "Ficus Religiosa",
+  "Ficus Carica",
+  "Ficus Rubiginosa",
+  "Ficus Maclellandii",
+  "Ficus Pandurata",
+  "Ficus Retusa",
+  "Ficus Sarmentosa",
+  "Ficus Virens",
+  "Calathea Orbifolia",
+  "Calathea Medallion",
+  "Calathea Roseopicta",
+  "Calathea Makoyana",
+  "Calathea White Fusion",
+  "Calathea Lancifolia",
+  "Calathea Rattlesnake",
+  "Calathea Zebrina",
+  "Calathea Dottie",
+  "Calathea Freddie",
+  "Calathea Beauty Star",
+  "Calathea Warscewiczii",
+  "Calathea Musaica",
+  "Calathea Crocata",
+  "Calathea Network",
+  "Calathea Flame Star",
+  "Calathea Peacock",
+  "Calathea Freddie Variegata",
+  "Calathea Vittata",
+  "Calathea Roseopicta Variegata",
+  "Anthurium Clarinervium",
+  "Anthurium Warocqueanum",
+  "Anthurium Hookeri",
+  "Anthurium Crystallinum",
+  "Anthurium Forgetii",
+  "Anthurium Veitchii",
+  "Anthurium Magnificum",
+  "Anthurium Superbum",
+  "Anthurium Andreanum",
+  "Anthurium Scherzerianum",
+  "Anthurium Red",
+  "Anthurium White",
+  "Anthurium Pink",
+  "Anthurium Black",
+  "Anthurium Silver",
+  "Anthurium Green",
+  "Anthurium Variegata",
+  "Anthurium Golden",
+  "Anthurium Purple",
+  "Anthurium Orange",
+  "Begonia Maculata",
+  "Begonia Rex",
+  "Begonia Angel Wing",
+  "Begonia Erythrophylla",
+  "Begonia Masoniana",
+  "Begonia Amphioxus",
+  "Begonia Bowerae",
+  "Begonia Corallina",
+  "Begonia Metallica",
+  "Begonia Grandis",
+  "Begonia Tuberhybrida",
+  "Begonia Solananthera",
+  "Begonia Pavonina",
+  "Begonia Urophylla",
+  "Begonia Venosa",
+  "Begonia Coccinea",
+  "Begonia Boliviensis",
+  "Begonia Fuchsioides",
+  "Begonia Clavicaulis",
+  "Begonia Picta",
+  "Caladium White Christmas",
+  "Caladium Red Flash",
+  "Caladium Carolyn Whorton",
+  "Caladium Aaron",
+  "Caladium Florida Sweetheart",
+  "Caladium Miss Muffet",
+  "Caladium Pink Beauty",
+  "Caladium Candidum",
+  "Caladium Red Ruffles",
+  "Caladium Fancy Leaf",
+  "Caladium White Queen",
+  "Caladium Summer Snow",
+  "Caladium White Wing",
+  "Caladium Strawberry Star",
+  "Caladium Alabama",
+  "Caladium White Christmas Variegata",
+  "Caladium Pink Symphony",
+  "Caladium Florida Fancy",
+  "Caladium White Christmas Pink",
+  "Caladium White Christmas Red",
+  "Dracaena Marginata",
+  "Dracaena Fragrans",
+  "Dracaena Lisa",
+  "Dracaena Janet Craig",
+  "Dracaena Warneckii",
+  "Dracaena Reflexa",
+  "Dracaena Sanderiana",
+  "Dracaena Compacta",
+  "Dracaena Gold Coast",
+  "Dracaena Lemon Lime",
+  "Dracaena Colorama",
+  "Dracaena Surculosa",
+  "Dracaena Deremensis",
+  "Dracaena Draco",
+  "Dracaena Cinnabari",
+  "Dracaena Godseffiana",
+  "Dracaena Australis",
+  "Dracaena Angolensis",
+  "Dracaena Brauni",
+  "Dracaena Marginata Variegata",
+  "Hoya Carnosa",
+  "Hoya Kerrii",
+  "Hoya Pubicalyx",
+  "Hoya Compacta",
+  "Hoya Australis",
+  "Hoya Obovata",
+  "Hoya Linearis",
+  "Hoya Bella",
+  "Hoya Mathilde",
+  "Hoya Crimson Princess",
+  "Hoya Wayetii",
+  "Hoya Retusa",
+  "Hoya Lacunosa",
+  "Hoya Polyneura",
+  "Hoya Kentiana",
+  "Hoya Imperialis",
+  "Hoya Tricolor",
+  "Hoya Macrophylla",
+  "Hoya Meliflua",
+  "Hoya Carnosa Variegata",
+  "Echeveria Lola",
+  "Echeveria Perle von Nurnberg",
+  "Echeveria Black Prince",
+  "Echeveria Agavoides",
+  "Echeveria Pulidonis",
+  "Echeveria Blue Atoll",
+  "Echeveria Afterglow",
+  "Echeveria Shaviana",
+  "Echeveria Setosa",
+  "Echeveria Imbricata",
+  "Sedum Morganianum",
+  "Sedum Rubrotinctum",
+  "Sedum Album",
+  "Sedum Nussbaumerianum",
+  "Sedum Pachyphyllum",
+  "Sedum Spurium",
+  "Sedum Dasyphyllum",
+  "Sedum Sarmentosum",
+  "Sedum Reflexum",
+  "Sedum Acre",
+  "Golden Barrel Cactus",
+  "Saguaro Cactus",
+  "Christmas Cactus",
+  "Bunny Ear Cactus",
+  "Moon Cactus",
+  "Old Man Cactus",
+  "Prickly Pear Cactus",
+  "Fishhook Barrel Cactus",
+  "Cholla Cactus",
+  "Hedgehog Cactus",
+  "Star Cactus",
+  "Ball Cactus",
+  "Cereus Cactus",
+  "Totem Pole Cactus",
+  "Silver Torch Cactus",
+  "San Pedro Cactus",
+  "Echinopsis Cactus",
+  "Parodia Cactus",
+  "Astrophytum Cactus",
+  "Mammillaria Cactus",
+  "Boston Fern",
+  "Bird's Nest Fern",
+  "Staghorn Fern",
+  "Maidenhair Fern",
+  "Rabbit's Foot Fern",
+  "Kangaroo Fern",
+  "Lemon Button Fern",
+  "Silver Lace Fern",
+  "Autumn Fern",
+  "Cinnamon Fern",
+  "Japanese Painted Fern",
+  "Asparagus Fern",
+  "Button Fern",
+  "Leatherleaf Fern",
+  "Royal Fern",
+  "Sword Fern",
+  "Tree Fern",
+  "Western Sword Fern",
+  "Lady Fern",
+  "Goldback Fern",
+  "Aglaonema Silver Bay",
+  "Aglaonema Red Emerald",
+  "Aglaonema Maria",
+  "Aglaonema Cutlass",
+  "Aglaonema Siam Aurora",
+  "Aglaonema Commutatum",
+  "Aglaonema Crispum",
+  "Aglaonema Pictum Tricolor",
+  "Aglaonema Pink Dalmatian",
+  "Aglaonema White Christmas",
+  "Zamioculcas Zamiifolia",
+  "Zamioculcas Zamiifolia Raven",
+  "Zamioculcas Zamiifolia Variegata",
+  "Zamioculcas Zamiifolia Black",
+  "Zamioculcas Zamiifolia Lucky",
+  "Zamioculcas Zamiifolia ZZ Plant",
+  "Zamioculcas Zamiifolia ZZ Raven",
+  "Zamioculcas Zamiifolia ZZ Variegated",
+  "Zamioculcas Zamiifolia ZZ Black",
+  "Zamioculcas Zamiifolia ZZ Lucky"
   ];
 
   const plantsContainer = document.getElementById('plantsContainer');
@@ -197,7 +489,6 @@
   const resultTable = document.getElementById('resultTable');
   const sizeOptions = document.getElementById('sizeOptions');
 
-  // Store pouches as objects: {id, size, price, plant}
   let pouches = [];
   let pouchIdCounter = 0;
 
@@ -227,7 +518,7 @@
       div.innerHTML = `
         <label class="plant-field-label" for="plantInput${pouch.id}">Planta pentru saculețul ${index + 1} (${pouch.size} litri):</label>
         <input type="text" class="plant-field-input" id="plantInput${pouch.id}" placeholder="Introduceți specia plantei" autocomplete="off" required />
-        <button type="button" aria-label="Șterge saculețul ${index + 1}" title="Șterge saculețul" class="remove-pouch" style="background:#e57373; border:none; color:#fff; font-weight:700; font-size:18px; width:32px; height:32px; border-radius:50%; cursor:pointer;">×</button>
+        <button type="button" aria-label="Șterge saculețul ${index + 1}" title="Șterge saculețul" class="remove-pouch">×</button>
       `;
       plantsContainer.appendChild(div);
 
@@ -241,7 +532,6 @@
     });
   }
 
-  // Remove pouch button handler
   plantsContainer.addEventListener('click', e => {
     if (e.target.classList.contains('remove-pouch')) {
       const div = e.target.closest('.plant-field-row');
@@ -253,7 +543,6 @@
     }
   });
 
-  // Autocomplete function
   function setupAutocomplete(inp, arr) {
     let currentFocus;
 
@@ -277,7 +566,6 @@
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           b.addEventListener("mousedown", function(e) {
             inp.value = this.getElementsByTagName("input")[0].value;
-            // Update pouch plant value
             const pouchDiv = inp.closest('.plant-field-row');
             const pouchId = parseInt(pouchDiv.getAttribute('data-id'));
             const pouch = pouches.find(p => p.id === pouchId);
@@ -338,7 +626,6 @@
       alert('Vă rugăm să adăugați cel puțin un saculeț.');
       return;
     }
-    // Check all plants filled
     for (const pouch of pouches) {
       if (!pouch.plant.trim()) {
         alert('Vă rugăm să introduceți specia plantei pentru fiecare saculeț.');
@@ -346,14 +633,13 @@
       }
     }
 
-    // Build table
     let totalPrice = 0;
     let tableHTML = '<table><thead><tr><th>Mărimea sacului</th><th>Specia plantei</th><th>Preț (lei)</th></tr></thead><tbody>';
     pouches.forEach(pouch => {
       totalPrice += pouch.price;
       tableHTML += `<tr><td>${pouch.size} litri</td><td>${pouch.plant}</td><td>${pouch.price} lei</td></tr>`;
     });
-    tableHTML += `<tr><td colspan="2" style="text-align:right;"><strong>Total:</strong></td><td><strong>${totalPrice} lei</strong></td></tr>`;
+    tableHTML += `<tr><td colspan="2" style="text-align:right;"><strong>Total general:</strong></td><td><strong>${totalPrice} lei</strong></td></tr>`;
     tableHTML += '</tbody></table>';
 
     resultTable.innerHTML = tableHTML;
