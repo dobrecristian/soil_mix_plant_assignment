@@ -1,186 +1,363 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Săculeți mix de pământ</title>
-    <style>
-    body {
-      background: url('https://i.imgur.com/LgrxpLz.png'), #d0f0c0;
-      font-family: 'Quicksand', cursive;
-      font-size: 20px;
-      padding: 12px;
-      max-width: 900px;
-      margin: auto;
-      color: #2f4f2f;
-    }
-    h2 {
-      color: #2e7d32;
-      text-align: center;
-      font-size: 30px;
-      margin-bottom: 12px;
-      margin-top: 12px;
-    }
-    label {
-      display: block;
-      font-size: 16px;
-      margin-top: 12px;
-    }
-    select, input[type="number"], input[type="text"] {
-      width: 70%;
-      padding: 5px 8px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 2px solid #cdeac0;
-      background: linear-gradient(120deg, #eafaf1 60%, #cdeac0 100%);
-      color: #2f4f2f;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      box-sizing: border-box;
-      margin-top: 1px;
-      margin-bottom: 1px;
-      box-shadow: 0 1px 4px 0 rgba(76,175,80,0.06);
-    }
-    select:focus, input[type="number"]:focus, input[type="text"]:focus {
-      border-color: #66bb6a;
-      box-shadow: 0 0 0 2px #b5e7a0;
-    }
-    button {
-      background-color: #66bb6a;
-      color: white;
-      font-size: 18px;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 7px;
-      cursor: pointer;
-      margin-top: 12px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      transition: background 0.2s, transform 0.1s;
-      font-weight: 600;
-    }
-    button:hover, button:focus {
-      background-color: #388e3c;
-      transform: scale(1.03);
-    }
-    table {
-      width: 100%;
-      margin-top: 12px;
-      border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    th, td {
-      padding: 7px 8px;
-      text-align: left;
-      border-bottom: 1px solid #ccc;
-    }
-    th {
-      background-color: #b5e7a0;
-      color: #2f4f2f;
-      font-size: 18px;
-    }
-    .plant-field-row {
-      margin-top: 16px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
-    }
-    .plant-field-label {
-      min-width: 220px;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .plant-field-input {
-      flex: 1;
-      width: 100%;
-      max-width: 350px;
-    }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Săculeți mix de pământ</title>
+<style>
+  body {
+    background: url('https://i.imgur.com/LgrxpLz.png'), #d0f0c0;
+    font-family: 'Quicksand', cursive;
+    font-size: 20px;
+    padding: 12px;
+    max-width: 900px;
+    margin: auto;
+    color: #2f4f2f;
+  }
+  h2 {
+    color: #2e7d32;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+  }
+  label {
+    font-size: 16px;
+    margin-top: 12px;
+    display: block;
+  }
+  .size-option {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .size-label {
+    flex: 1;
+  }
+  button.add-pouch {
+    background-color: #66bb6a;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    user-select: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+  button.add-pouch:hover, button.add-pouch:focus {
+    background-color: #388e3c;
+    transform: scale(1.1);
+  }
+  .plant-field-row {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    position: relative;
+  }
+  .plant-field-label {
+    min-width: 220px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  /* --- MATCHED INPUT STYLING FROM soil_mix_plant_assignment.html --- */
+  .plant-field-input {
+    flex: 1;
+    width: 100%;
+    max-width: 350px;
+    background: #fff;
+    border: 2px solid #e3e3e3;
+    border-radius: 8px;
+    font-size: 18px;
+    color: #2f4f2f;
+    padding: 10px 16px;
+    outline: none;
+    box-sizing: border-box;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    box-shadow: 0 1px 4px 0 rgba(76,175,80,0.06);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .plant-field-input:focus {
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 2px #b5e7a0;
+  }
+  button#okButton {
+    background-color: #66bb6a;
+    color: white;
+    font-size: 18px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-top: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background 0.2s, transform 0.1s;
+    font-weight: 600;
+  }
+  button#okButton:hover, button#okButton:focus {
+    background-color: #388e3c;
+    transform: scale(1.03);
+  }
+  table {
+    width: 100%;
+    margin-top: 12px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 7px 8px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  th {
+    background-color: #b5e7a0;
+    color: #2f4f2f;
+    font-size: 18px;
+  }
+  /* Autocomplete styles */
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #b5e7a0;
+    border-top: none;
+    z-index: 99;
+    background: #fff;
+    max-height: 180px;
+    overflow-y: auto;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 8px 0 rgba(76,175,80,0.10);
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+  }
+  .autocomplete-item:hover, .autocomplete-active {
+    background-color: #cdeac0 !important;
+    color: #2e7d32;
+  }
+</style>
 </head>
 <body>
-    <h2>Săculeți mix de pământ</h2>
-    <form id="productForm">
-        <label for="sizeSelect">Alegeți mărimea sacului:</label>
-        <select id="sizeSelect" name="sizeSelect" required>
-            <option value="" disabled selected>Selectați mărimea</option>
-            <option value="2.5" data-price="45">2.5 litri (45 lei)</option>
-            <option value="5" data-price="70">5 litri (70 lei)</option>
-        </select>
-        <div id="quantityContainer" style="display:none; margin-top: 12px;">
-            <label for="quantityInput">Număr saculeți:</label>
-            <input type="number" id="quantityInput" name="quantityInput" min="1" value="1" />
-        </div>
-        <div id="plantsContainer"></div>
-        <button type="button" id="okButton" style="display:none;">OK</button>
-    </form>
-    <div id="resultTable"></div>
+<h2>Săculeți mix de pământ</h2>
 
-    <script>
-        const sizeSelect = document.getElementById('sizeSelect');
-        const quantityContainer = document.getElementById('quantityContainer');
-        const quantityInput = document.getElementById('quantityInput');
-        const plantsContainer = document.getElementById('plantsContainer');
-        const okButton = document.getElementById('okButton');
-        const resultTable = document.getElementById('resultTable');
+<div id="sizeOptions" aria-label="Alegeți mărimea sacului:">
+  <label style="font-weight:700; font-size:18px; margin-bottom:6px;">Alegeți mărimea sacului:</label>
+  <div class="size-option">
+    <div class="size-label">2.5 litri (45 lei)</div>
+    <button type="button" class="add-pouch" data-size="2.5" data-price="45" aria-label="Adaugă sac 2.5 litri">+</button>
+  </div>
+  <div class="size-option">
+    <div class="size-label">5 litri (70 lei)</div>
+    <button type="button" class="add-pouch" data-size="5" data-price="70" aria-label="Adaugă sac 5 litri">+</button>
+  </div>
+</div>
 
-        sizeSelect.addEventListener('change', () => {
-            if (sizeSelect.value) {
-                quantityContainer.style.display = 'block';
-                okButton.style.display = 'block';
-                updatePlantFields();
-            } else {
-                quantityContainer.style.display = 'none';
-                okButton.style.display = 'none';
-                plantsContainer.innerHTML = '';
-                resultTable.innerHTML = '';
-            }
-        });
+<form id="productForm" autocomplete="off" style="margin-top:24px;">
+  <div id="plantsContainer" aria-live="polite" aria-relevant="additions"></div>
+  <button type="button" id="okButton" style="display:none;">OK</button>
+</form>
 
-        quantityInput.addEventListener('input', () => {
-            updatePlantFields();
-        });
+<div id="resultTable" style="margin-top:24px;"></div>
 
-        function updatePlantFields() {
-            const quantity = parseInt(quantityInput.value) || 0;
-            plantsContainer.innerHTML = '';
-            for (let i = 0; i < quantity; i++) {
-                const div = document.createElement('div');
-                div.className = 'plant-field-row';
-                div.innerHTML = `
-                    <label class="plant-field-label">Planta pentru saculețul ${i + 1}:</label>
-                    <input type="text" class="plant-field-input" placeholder="Introduceți specia plantei" required />
-                `;
-                plantsContainer.appendChild(div);
-            }
+<script>
+  // Houseplants list (shortened for brevity)
+  const houseplants = [
+    "Aloe Vera", "Spider Plant", "Snake Plant", "Peace Lily", "Pothos", "Philodendron", "Monstera", "Fiddle Leaf Fig", "ZZ Plant", "Jade Plant",
+    "Rubber Plant", "Dracaena", "Chinese Evergreen", "Boston Fern", "Areca Palm", "Dieffenbachia", "Bird's Nest Fern", "English Ivy", "Croton", "African Violet",
+    "Anthurium", "Bamboo Palm", "Cast Iron Plant", "Calathea", "Prayer Plant", "Schefflera", "Polka Dot Plant", "Kalanchoe", "Hoya", "Peperomia",
+    "Staghorn Fern", "String of Pearls", "String of Hearts", "Begonia", "Oxalis", "Pilea", "Cactus", "Succulent", "Echeveria", "Sedum",
+    "Aglaonema", "Norfolk Island Pine", "Moth Orchid", "Dendrobium Orchid", "Cymbidium Orchid", "Vanda Orchid", "Cattleya Orchid", "Oncidium Orchid", "Miltonia Orchid", "Paphiopedilum Orchid",
+    "Ficus Benjamina", "Ficus Audrey", "Ficus Elastica", "Ficus Lyrata", "Ficus Microcarpa", "Ficus Alii", "Ficus Triangularis", "Ficus Religiosa", "Ficus Pumila", "Ficus Ginseng",
+    "Sansevieria Cylindrica", "Sansevieria Trifasciata", "Sansevieria Moonshine", "Sansevieria Laurentii", "Sansevieria Masoniana", "Sansevieria Ballyi", "Sansevieria Hahnii", "Sansevieria Zeylanica", "Sansevieria Patens", "Sansevieria Silver Flame",
+    "Epipremnum Aureum", "Epipremnum Pinnatum", "Epipremnum Cebu Blue", "Epipremnum Marble Queen", "Epipremnum Neon", "Epipremnum Njoy", "Epipremnum Pearls and Jade", "Epipremnum Manjula", "Epipremnum Shangri La", "Epipremnum Skeleton Key",
+    "Syngonium", "Syngonium Podophyllum", "Syngonium Pink", "Syngonium White Butterfly", "Syngonium Neon Robusta", "Syngonium Albo", "Syngonium Wendlandii", "Syngonium Confetti", "Syngonium Red Spot", "Syngonium Maria"
+  ];
+
+  const plantsContainer = document.getElementById('plantsContainer');
+  const okButton = document.getElementById('okButton');
+  const resultTable = document.getElementById('resultTable');
+  const sizeOptions = document.getElementById('sizeOptions');
+
+  // Store pouches as objects: {id, size, price, plant}
+  let pouches = [];
+  let pouchIdCounter = 0;
+
+  sizeOptions.addEventListener('click', e => {
+    if (e.target.classList.contains('add-pouch')) {
+      const size = e.target.getAttribute('data-size');
+      const price = parseFloat(e.target.getAttribute('data-price'));
+      addPouch(size, price);
+    }
+  });
+
+  function addPouch(size, price) {
+    pouchIdCounter++;
+    const pouchId = pouchIdCounter;
+    pouches.push({id: pouchId, size, price, plant: ''});
+    renderPouches();
+    okButton.style.display = 'block';
+  }
+
+  function renderPouches() {
+    plantsContainer.innerHTML = '';
+    pouches.forEach((pouch, index) => {
+      const div = document.createElement('div');
+      div.className = 'plant-field-row';
+      div.setAttribute('data-id', pouch.id);
+
+      div.innerHTML = `
+        <label class="plant-field-label" for="plantInput${pouch.id}">Planta pentru saculețul ${index + 1} (${pouch.size} litri):</label>
+        <input type="text" class="plant-field-input" id="plantInput${pouch.id}" placeholder="Introduceți specia plantei" autocomplete="off" required />
+        <button type="button" aria-label="Șterge saculețul ${index + 1}" title="Șterge saculețul" class="remove-pouch" style="background:#e57373; border:none; color:#fff; font-weight:700; font-size:18px; width:32px; height:32px; border-radius:50%; cursor:pointer;">×</button>
+      `;
+      plantsContainer.appendChild(div);
+
+      const input = div.querySelector('input');
+      input.value = pouch.plant;
+      input.addEventListener('input', e => {
+        pouch.plant = e.target.value;
+      });
+
+      setupAutocomplete(input, houseplants);
+    });
+  }
+
+  // Remove pouch button handler
+  plantsContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('remove-pouch')) {
+      const div = e.target.closest('.plant-field-row');
+      const id = parseInt(div.getAttribute('data-id'));
+      pouches = pouches.filter(p => p.id !== id);
+      renderPouches();
+      if (pouches.length === 0) okButton.style.display = 'none';
+      resultTable.innerHTML = '';
+    }
+  });
+
+  // Autocomplete function
+  function setupAutocomplete(inp, arr) {
+    let currentFocus;
+
+    inp.addEventListener("input", function() {
+      closeAllLists();
+      let val = this.value;
+      if (!val) return false;
+      currentFocus = -1;
+
+      const a = document.createElement("DIV");
+      a.setAttribute("class", "autocomplete-items");
+      this.parentNode.appendChild(a);
+
+      let matchCount = 0;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].toLowerCase().indexOf(val.toLowerCase()) === 0 && matchCount < 20) {
+          const b = document.createElement("DIV");
+          b.className = "autocomplete-item";
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          b.addEventListener("mousedown", function(e) {
+            inp.value = this.getElementsByTagName("input")[0].value;
+            // Update pouch plant value
+            const pouchDiv = inp.closest('.plant-field-row');
+            const pouchId = parseInt(pouchDiv.getAttribute('data-id'));
+            const pouch = pouches.find(p => p.id === pouchId);
+            if (pouch) pouch.plant = inp.value;
+            closeAllLists();
+            inp.blur();
+          });
+          a.appendChild(b);
+          matchCount++;
         }
+      }
+    });
 
-        okButton.addEventListener('click', () => {
-            const size = sizeSelect.value;
-            const pricePerUnit = parseFloat(sizeSelect.options[sizeSelect.selectedIndex].getAttribute('data-price'));
-            const quantity = parseInt(quantityInput.value) || 0;
-            const plants = Array.from(plantsContainer.querySelectorAll('input.plant-field-input')).map(input => input.value.trim());
+    inp.addEventListener("keydown", function(e) {
+      let x = this.parentNode.querySelector(".autocomplete-items");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        currentFocus++;
+        addActive(x);
+      } else if (e.keyCode == 38) {
+        currentFocus--;
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        e.preventDefault();
+        if (currentFocus > -1) {
+          if (x) x[currentFocus].dispatchEvent(new Event('mousedown'));
+        }
+      }
+    });
 
-            if (plants.some(plant => plant === '')) {
-                alert('Vă rugăm să introduceți specia plantei pentru fiecare saculeț.');
-                return;
-            }
+    function addActive(x) {
+      if (!x) return false;
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);
+      x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+      for (let i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      const items = document.getElementsByClassName("autocomplete-items");
+      for (let i = 0; i < items.length; i++) {
+        if (elmnt != items[i] && elmnt != inp) {
+          if (items[i].parentNode) items[i].parentNode.removeChild(items[i]);
+        }
+      }
+    }
+    document.addEventListener("mousedown", function(e) {
+      closeAllLists(e.target);
+    });
+  }
 
-            let totalPrice = pricePerUnit * quantity;
+  okButton.addEventListener('click', () => {
+    if (pouches.length === 0) {
+      alert('Vă rugăm să adăugați cel puțin un saculeț.');
+      return;
+    }
+    // Check all plants filled
+    for (const pouch of pouches) {
+      if (!pouch.plant.trim()) {
+        alert('Vă rugăm să introduceți specia plantei pentru fiecare saculeț.');
+        return;
+      }
+    }
 
-            let tableHTML = '<table><thead><tr><th>Mărimea sacului</th><th>Specia plantei</th><th>Preț total (lei)</th></tr></thead><tbody>';
-            for (let i = 0; i < quantity; i++) {
-                tableHTML += `<tr><td>${size} litri</td><td>${plants[i]}</td><td>${pricePerUnit} lei</td></tr>`;
-            }
-            tableHTML += `<tr><td colspan="2" style="text-align:right;"><strong>Total general:</strong></td><td><strong>${totalPrice} lei</strong></td></tr>`;
-            tableHTML += '</tbody></table>';
+    // Build table
+    let totalPrice = 0;
+    let tableHTML = '<table><thead><tr><th>Mărimea sacului</th><th>Specia plantei</th><th>Preț (lei)</th></tr></thead><tbody>';
+    pouches.forEach(pouch => {
+      totalPrice += pouch.price;
+      tableHTML += `<tr><td>${pouch.size} litri</td><td>${pouch.plant}</td><td>${pouch.price} lei</td></tr>`;
+    });
+    tableHTML += `<tr><td colspan="2" style="text-align:right;"><strong>Total:</strong></td><td><strong>${totalPrice} lei</strong></td></tr>`;
+    tableHTML += '</tbody></table>';
 
-            resultTable.innerHTML = tableHTML;
-        });
-    </script>
+    resultTable.innerHTML = tableHTML;
+  });
+</script>
 </body>
 </html>
