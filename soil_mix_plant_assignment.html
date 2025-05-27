@@ -189,6 +189,29 @@
 
 <script>
   // Predefined list of 1000 unique popular houseplants (truncated here for brevity)
+  const plantDescriptions = {
+  "Monstera Adansonii": "Plantă tropicală cu frunze perforate, ușor de îngrijit.",
+  "Monstera Thai Constellation": "Varietate rară cu frunze pestrițe, foarte decorativă.",
+  "Monstera Obliqua": "Specie exotică, extrem de rară, cu frunze subțiri și multe găuri.",
+  "Monstera Deliciosa": "Cunoscută ca 'planta cu brânci', are frunze mari, decupate.",
+  "Monstera Esqueleto": "Frunze dramatice, foarte perforate, ideală pentru colecționari.",
+  "Alocasia Polly": "Frunze verzi lucioase cu nervuri albe, aspect sculptural.",
+  "Philodendron Birkin": "Frunze rotunde cu dungi albe, plantă compactă și modernă.",
+  "Pothos Golden": "Cățărare rapidă, frunze verzi cu pete galbene, ușor de crescut.",
+  "Ficus Lyrata": "Cunoscut ca 'ficus cu frunză de vioară', foarte popular în decor.",
+  "Calathea Orbifolia": "Frunze mari, rotunde, cu dungi argintii, iubitoare de umiditate.",
+  "Anthurium Clarinervium": "Frunze catifelate, cu nervuri albe proeminente, exotică.",
+  "Begonia Maculata": "Frunze cu buline albe și dos roșu, foarte decorativă.",
+  "Caladium White Christmas": "Frunze albe cu nervuri verzi, ideală pentru lumină filtrată.",
+  "Dracaena Marginata": "Tulpină subțire, frunze ascuțite, foarte rezistentă.",
+  "Hoya Carnosa": "Plantă suculentă, cu flori cerate, parfumate, ușor de întreținut.",
+  "Echeveria Lola": "Rozetă suculentă, frunze gri-albăstrui, ușor de crescut.",
+  "Golden Barrel Cactus": "Cactus rotund, cu țepi galbeni, perfect pentru decor minimalist.",
+  "Boston Fern": "Ferigă clasică, frunze dese, purifică aerul.",
+  "Aglaonema Silver Bay": "Frunze mari, argintii, plantă tolerantă la lumină scăzută.",
+  "Zamioculcas Zamiifolia": "ZZ Plant, foarte rezistentă, frunze lucioase, crește lent."
+  // ...poți adăuga mai multe după nevoie
+};
   const houseplants = [
   "Monstera Adansonii",
   "Monstera Thai Constellation",
@@ -558,26 +581,33 @@
       this.parentNode.appendChild(a);
 
       let matchCount = 0;
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].toLowerCase().indexOf(val.toLowerCase()) === 0 && matchCount < 20) {
-          const b = document.createElement("DIV");
-          b.className = "autocomplete-item";
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          b.addEventListener("mousedown", function(e) {
-            inp.value = this.getElementsByTagName("input")[0].value;
-            const pouchDiv = inp.closest('.plant-field-row');
-            const pouchId = parseInt(pouchDiv.getAttribute('data-id'));
-            const pouch = pouches.find(p => p.id === pouchId);
-            if (pouch) pouch.plant = inp.value;
-            closeAllLists();
-            inp.blur();
-          });
-          a.appendChild(b);
-          matchCount++;
-        }
-      }
+for (let i = 0; i < arr.length; i++) {
+  if (arr[i].toLowerCase().indexOf(val.toLowerCase()) === 0 && matchCount < 20) {
+    const b = document.createElement("DIV");
+    b.className = "autocomplete-item";
+
+    // Obține descrierea plantei, dacă există
+    const desc = plantDescriptions[arr[i]] ? `<div style="font-size:13px; color:#4d7c4d; margin-top:2px;">${plantDescriptions[arr[i]]}</div>` : "";
+
+    // Afișează numele plantei și, dedesubt, descrierea
+    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+    b.innerHTML += arr[i].substr(val.length);
+    b.innerHTML += desc;
+    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+
+    b.addEventListener("mousedown", function(e) {
+      inp.value = this.getElementsByTagName("input")[0].value;
+      const pouchDiv = inp.closest('.plant-field-row');
+      const pouchId = parseInt(pouchDiv.getAttribute('data-id'));
+      const pouch = pouches.find(p => p.id === pouchId);
+      if (pouch) pouch.plant = inp.value;
+      closeAllLists();
+    });
+
+    a.appendChild(b);
+    matchCount++;
+  }
+}
     });
 
     inp.addEventListener("keydown", function(e) {
